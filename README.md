@@ -6,4 +6,4 @@ how it works in different output such as console, markdown and latex
 
 ## License
 
-Mathics is available under the GPL License.
+Mathics is available under the MIT License.
