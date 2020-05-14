@@ -1,8 +1,7 @@
 # Mathics ( Mathematics )
 
 Mathics is the missing mathematics operation library such as Ratios, Proportions, Percents, Expression, 
-Equations, Geometry, Statistics, Probability, Coordinate Plane, Function, and many more, also explaining 
-how it works in different output such as console, markdown and latex
+Equations, Geometry, Statistics, Probability, Coordinate Plane, Function, and many more
 
 ## Available Features
 - GCD Operation ( Greatest Common Factor)
