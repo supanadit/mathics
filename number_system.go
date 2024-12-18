@@ -2,65 +2,77 @@ package mathics
 
 import (
 	"errors"
-	"fmt"
-	"reflect"
 )
 
-// WholeNumbers is type of number system
-var WholeNumbers NumberType = NumberType{
-	Name:        "Whole Numbers",
-	Description: "A number with no fractional or decimal part and cannot be negative",
-}
-
-// NaturalNumbers is type of number system
-var NaturalNumbers NumberType = NumberType{
-	Name:        "Natural Numbers",
-	Description: "Whole numbers from 1 and up or some teacher say these are all the \"counting number\"",
-}
-
-// Integers is type of number system
-var Integers NumberType = NumberType{
-	Name:        "Integers",
-	Description: "All whole numbers (including positive and negative whole numbers)",
-}
-
-// NumberType is the struct to grouping some known type of number
+// NumberType represents a type of number system
 type NumberType struct {
 	Name        string
 	Description string
 }
 
-// CheckNumberSystem is the function for checking which type of your number really is
+// Predefined number systems
+var (
+	WholeNumbers = NumberType{
+		Name:        "Whole Numbers",
+		Description: "A number with no fractional or decimal part and cannot be negative",
+	}
+	NaturalNumbers = NumberType{
+		Name:        "Natural Numbers",
+		Description: "Whole numbers from 1 and up or some teacher say these are all the \"counting number\"",
+	}
+	Integers = NumberType{
+		Name:        "Integers",
+		Description: "All whole numbers (including positive and negative whole numbers)",
+	}
+	RationalNumbers = NumberType{
+		Name:        "Rational Numbers",
+		Description: "Any number that can be expressed as the quotient or fraction of two integers",
+	}
+	IrrationalNumbers = NumberType{
+		Name:        "Irrational Numbers",
+		Description: "Any real number that cannot be expressed as a ratio of integers",
+	}
+	RealNumbers = NumberType{
+		Name:        "Real Numbers",
+		Description: "All rational and irrational numbers",
+	}
+)
+
+// CheckNumberSystem determines the type(s) of the given number
 func CheckNumberSystem(i interface{}) (n []NumberType, e error) {
-	switch i.(type) {
+	switch v := i.(type) {
 	case int:
-		d := int(reflect.ValueOf(i).Int())
-		if IsWholeNumbers(d) {
+		if IsWholeNumbers(v) {
 			n = append(n, WholeNumbers)
 		}
-
-		if IsNaturalNumbers(d) {
+		if IsNaturalNumbers(v) {
 			n = append(n, NaturalNumbers)
 		}
-
 		n = append(n, Integers)
-		break
 	case float64:
-		fmt.Println("On working for rational numbers, irrational numbers and real numbers")
-		break
+		if IsRationalNumber(v) {
+			n = append(n, RationalNumbers)
+		} else {
+			n = append(n, IrrationalNumbers)
+		}
+		n = append(n, RealNumbers)
 	default:
 		e = errors.New("your input is not a type of number")
-		break
 	}
 	return n, e
 }
 
-// IsWholeNumbers is function for knowing whether the input is whole numbers or nor
+// IsWholeNumbers checks if the input is a whole number
 func IsWholeNumbers(i int) bool {
 	return i >= 0
 }
 
-// IsNaturalNumbers is function for knowing whether the input is natural numbers or nor
+// IsNaturalNumbers checks if the input is a natural number
 func IsNaturalNumbers(i int) bool {
 	return i > 0
+}
+
+// IsRationalNumber checks if the input is a rational number
+func IsRationalNumber(f float64) bool {
+	return f == float64(int(f))
 }

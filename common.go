@@ -1,11 +1,19 @@
 package mathics
 
-// GCDT is Greatest Common Factor function for two number
+import "math"
+
+// GCDT calculates the Greatest Common Divisor (GCD) of two integers using the Euclidean algorithm.
+// It returns the GCD of the two input integers.
 func GCDT(a int, b int) int {
+	// Ensure the inputs are non-negative
+	a = int(math.Abs(float64(a)))
+	b = int(math.Abs(float64(b)))
+
+	// Euclidean algorithm to find GCD
 	for b != 0 {
-		t := b
+		temp := b
 		b = a % b
-		a = t
+		a = temp
 	}
 	return a
 }
@@ -32,22 +40,36 @@ func LCMT(a int, b int) int {
 
 // LCMM is Least Common Multiple function for more than two number
 func LCMM(i []int) int {
-	l := len(i)
-	a := 0
-	b := 0
-
-	for x := 0; x < (l - 1); x++ {
-		a = i[x] % i[x+1]
-		if a == 0 {
-			i[x+1] = (i[x] * i[x+1]) / i[x+1]
-		} else {
-			b = i[x+1] % a
-			if b == 0 {
-				i[x+1] = (i[x] * i[x+1]) / a
-			} else {
-				i[x+1] = (i[x] * i[x+1]) / b
-			}
-		}
+	if len(i) == 0 {
+		return 0
 	}
-	return i[l-1]
+
+	result := i[0]
+	for x := 1; x < len(i); x++ {
+		result = LCMT(result, i[x])
+	}
+	return result
+}
+
+func ExtendedGCD(a int, b int) (int, int, int) {
+	// Ensure the inputs are non-negative
+	if a < 0 {
+		a = -a
+	}
+	if b < 0 {
+		b = -b
+	}
+
+	old_r, r := a, b
+	old_s, s := 1, 0
+	old_t, t := 0, 1
+
+	for r != 0 {
+		quotient := old_r / r
+		old_r, r = r, old_r-quotient*r
+		old_s, s = s, old_s-quotient*s
+		old_t, t = t, old_t-quotient*t
+	}
+
+	return old_r, old_s, old_t
 }
